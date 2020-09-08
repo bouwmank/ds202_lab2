@@ -10,5 +10,76 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ## Adam's Individual Analysis
+```{r}
+choco <- read.csv("https://raw.githubusercontent.com/xdaiISU/ds202materials/master/hwlabs/data/choco.csv") 
+str(choco) 
+summary(choco)
+```
+## 1
+```{r}
+Ratings <- choco$Rating
+hist(Ratings)
+boxplot(Ratings)
+```
+This histogram shows that most the ratings fall between 2.5 and 4.0, but have no ratings between 3.0 and 3.2. The histogram also starts to give us an idea that there may be outliers in the lower ratings. However, the boxplot can confirm this. The ratings at 1.0, 1.5, 1.75, and 2.0 are outliers.  Also we see the median at approximately 3.25 an an IQR of .5.
 
+## 2
+```{r}
+library(ggplot2)
+ggplot(choco, aes(x=Date, y=Rating)) + geom_bar(stat = "identity")
+```
+  
+This graph shows how many ratings were included by year. He started in 2006 and generally reviewed more and more chocolate each year until 2015, this is where he peaked and began to review less consistently.
 
+## 3
+```{r}
+ggplot(choco, aes(x=Cocoa_Percent, y=Rating)) + geom_point() + geom_smooth(method=lm, formula= y~x)
+
+summary(choco$Cocoa_Percent)
+bottomHalf <- choco[choco$Cocoa_Percent < 70,]
+topHalf <- choco[choco$Cocoa_Percent >= 70,]
+summary(bottomHalf$Rating)
+summary(topHalf$Rating)
+```
+The graphical summary of the relationship between the Cocoa Percentage and the Rating doesn't show a very clear relationships in the points themselves. However, the trendline does show a slight negative correlation. To check this numerically I split the data at the median to see how the data summary of the lower half of Cocoa Percentage compared to the top half. This numerical representation shows almost no difference between the two halves, besides a slightly lower mean rating for the chocolate with a higher percentage.
+
+## 4
+```{r}
+charac <- c()
+for( row in 1:nrow(choco))
+{
+  charac <- c(charac, choco[row, 'Characteristics1'])
+  charac <- c(charac, choco[row, 'Characteristics2'])
+  charac <- c(charac, choco[row, 'Characteristics3'])
+  cahrac <- c(charac, choco[row, 'Characteristics4'])
+}
+uniques <- unique(unlist(charac, use.names = FALSE))
+means <- c()
+for( uniq in uniques)
+{
+  curr <- choco[(choco$Characteristics1 == uniq) | (choco$Characteristics2 == uniq) | (choco$Characteristics3 == uniq) | (choco$Characteristics4 == uniq),]
+  means <- c(means, mean(curr$Rating, na.rm = TRUE))
+}
+meanByCharac <- data.frame("Characteristic" = uniques, "Mean" = means)
+best5 <- meanByCharac[order(meanByCharac$Mean),]
+worst5 <- meanByCharac[order(-meanByCharac$Mean),]
+head(best5, 5)
+head(worst5, 5)
+```
+These lists show the mean Rating of the authors favorite and least favorite chocolates based on the characteristic listed. 
+
+```{r}
+tangerine <- choco[(choco$Characteristics1 == 'tangerine') | (choco$Characteristics2 == 'tangerine') | (choco$Characteristics3 == 'tangerine') | (choco$Characteristics4 == 'tangerine'),]
+
+notChocoloate <- choco[(choco$Characteristics1 == 'this is not chocolate') | (choco$Characteristics2 == 'this is not chocolate') | (choco$Characteristics3 == 'this is not chocolate ') | (choco$Characteristics4 == 'this is not chocolate '),]
+
+boxplot(tangerine$Rating)
+boxplot(notChocoloate$Rating)
+```
+  
+These graphs show us why some of the characteristics had the highest or lowest mean. It is due to them not having many ratings, often a single very low or very high rating. 
+
+## 5
+With my partner I hope to find a more meaningful graphical showing of characteristics with high or low means, keeping in better mind the amount of reviews a chocolate has received. This perhaps means eliminating characteristics that have not reached a threshold of number of reviews.
+
+Additionally, I would be curious to see which company is the reviews favorite. Perhaps a boxplot of each companies reviewed chocolate side by side would show this well.
