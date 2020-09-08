@@ -1,0 +1,13 @@
+---
+title: "individual1"
+author: "Kellan Bouwman"
+date: "9/8/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Lab 2
+
