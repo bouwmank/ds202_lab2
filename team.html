@@ -9,7 +9,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
-<meta name="author" content="Adam Ford" />
+<meta name="author" content="Adam Ford and Kellan Bouwman" />
 
 
 <title>team</title>
@@ -363,7 +363,7 @@ summary {
 
 
 <h1 class="title toc-ignore">team</h1>
-<h4 class="author">Adam Ford</h4>
+<h4 class="author">Adam Ford and Kellan Bouwman</h4>
 <h4 class="date">9/9/2020</h4>
 
 </div>
@@ -387,7 +387,7 @@ str(choco) </code></pre>
 ##  $ Characteristics3    : chr  &quot;full body&quot; &quot;savory&quot; &quot;bready&quot; &quot;roasty&quot; ...
 ##  $ Characteristics4    : chr  NA NA NA NA ...
 ##  $ Rating              : num  3.75 3.5 3.25 3.75 3.5 4 4 3.75 3.5 3.25 ...</code></pre>
-<p>We talked and planned to perform two analysis on the data, first we want to see which companies received the highest mean ratings from the reviewer. Additionally, to get more perspective on the companies themselves we want to view the relationship between each company and their cocoa percentage. This led us to place them ratings by the cocoa on a scatter plot to see if the were any tends visible, unfortunately there are no visible linear trends in stead we see a clustering of data approximately centered at 70 Median Cocoa and 3.0 Rating.</p>
+<p>We talked and planned to perform two analysis on the data, first we want to see which companies received the highest median ratings from the reviewer. Additionally, to get more perspective on the companies themselves we want to view the relationship between each company and their cocoa percentage. This led us to place them ratings by the cocoa on a scatter plot to see if the were any tends visible, unfortunately there are no visible linear trends instead we see a clustering of data approximately centered at 70 Median Cocoa and 3.0 Rating. This probably due to these values being near the global median for the Cocoa Percent of chocolate produced and the median of the authors ratings.</p>
 <pre class="r"><code>companies &lt;- c()
 for( row in 1:nrow(choco))
 {
