@@ -387,6 +387,565 @@ str(choco) </code></pre>
 ##  $ Characteristics3    : chr  &quot;full body&quot; &quot;savory&quot; &quot;bready&quot; &quot;roasty&quot; ...
 ##  $ Characteristics4    : chr  NA NA NA NA ...
 ##  $ Rating              : num  3.75 3.5 3.25 3.75 3.5 4 4 3.75 3.5 3.25 ...</code></pre>
+<p>We talked and planned to perform two analysis on the data, first we want to see which companies received the highest mean ratings from the reviewer. Additionally, to get more perspective on the companies themselves we want to view the realationship between each company and their cocoa percentage.</p>
+<pre class="r"><code>companies &lt;- c()
+for( row in 1:nrow(choco))
+{
+  companies &lt;- c(companies, choco[row, &#39;Company&#39;])
+}
+uniques &lt;- unique(unlist(companies, use.names = FALSE))
+medianRating &lt;- c()
+medianCocoa &lt;- c()
+for( uniq in uniques)
+{
+  curr &lt;- choco[choco$Company == uniq,]
+  medianRating &lt;- c(medianRating, median(curr$Rating, na.rm = TRUE))
+  medianCocoa &lt;- c(medianCocoa, median(curr$Cocoa_Percent, na.rm = TRUE))
+}
+companyStats &lt;- data.frame(&quot;Company&quot; = uniques, &quot;MedianRating&quot; = medianRating, &quot;MedianCocoa&quot; = medianCocoa )
+companyStats</code></pre>
+<pre><code>##                                     Company MedianRating MedianCocoa
+## 1                                      5150        3.500        76.0
+## 2                                  A. Morin        3.500        70.0
+## 3                                    Acalli        3.625        70.0
+## 4             Adi aka Fijiana (Easy In Ltd)        3.375        76.0
+## 5                                     Aelan        2.750        70.0
+## 6                        Aequare (Gianduja)        2.875        62.5
+## 7                                  Ah Cacao        3.000        70.0
+## 8                        Akesson&#39;s (Pralus)        2.750        75.0
+## 9                             Alain Ducasse        2.750        75.0
+## 10                                Alexandre        3.500        70.0
+## 11                    Altus aka Cao Artisan        3.000        60.0
+## 12                                    Amano        3.500        70.0
+## 13                    Amatller (Simon Coll)        2.875        77.5
+## 14                            Amazing Cacao        3.250        70.0
+## 15                                  Amazona        3.375        72.5
+## 16                                 Ambrosia        3.250        67.0
+## 17                                   Amedei        3.500        70.0
+## 18                                     AMMA        3.750        75.0
+## 19                                  Anahata        3.000        75.0
+## 20                                   Animas        3.500        75.0
+## 21                                      Ara        2.875        75.0
+## 22                                    Arete        3.500        70.0
+## 23                                Argencove        3.375        70.0
+## 24                      Artisan du Chocolat        3.250        72.0
+## 25         Artisan du Chocolat (Casa Luker)        2.750        72.0
+## 26                                Askinosie        3.750        71.0
+## 27                                   Atypic        3.000        70.0
+## 28                                     Auro        3.000        70.0
+## 29                              Bahen &amp; Co.        3.000        70.0
+## 30                                   Baiani        3.000        70.0
+## 31                                    Bakau        3.125        70.0
+## 32                                 Bankston        2.750        72.0
+## 33                          Bar Au Chocolat        3.500        70.0
+## 34                              Baravelli&#39;s        2.750        80.0
+## 35                                    Batch        3.500        65.0
+## 36                                     Bean        2.250        70.0
+## 37                               Beau Cacao        3.125        72.5
+## 38                                  Beehive        2.750        75.0
+## 39                                Belcolade        2.750        64.0
+## 40                               Bellflower        3.500        70.0
+## 41                                   Belvie        3.250        75.0
+## 42                                 Belyzium        3.000        83.0
+## 43                                    Benns        3.000        72.0
+## 44                            Benoit Nihant        3.625        73.5
+## 45                                Bernachon        2.750        55.0
+## 46                       Beschle (Felchlin)        3.375        72.0
+## 47                                    Bisou        2.500        77.0
+## 48                                 Bitacora        3.000        70.0
+## 49                      Bittersweet Origins        3.250        70.5
+## 50                                    Bixby        3.000        70.0
+## 51                           Black Mountain        2.750        70.0
+## 52                   Black River (A. Morin)        2.750        70.0
+## 53                                 Blanxart        3.125        77.0
+## 54                             Blue Bandana        3.500        75.0
+## 55                                     Boho        2.750        70.0
+## 56                                Bonaterra        2.750        72.0
+## 57                                   Bonnat        3.500        75.0
+## 58                   Bouga Cacao (Tulicorp)        2.375        88.5
+## 59                               Bowler Man        2.750        70.0
+## 60                            Box Chocolate        3.250        72.0
+## 61                                Brasstown        3.625        72.5
+## 62             Brasstown aka It&#39;s Chocolate        3.625        70.0
+## 63                                   Brazen        3.250        75.0
+## 64                              Breeze Mill        3.000        70.0
+## 65                                   Bright        3.250        71.0
+## 66                                 Britarev        3.250        70.0
+## 67                     Bronx Grrl Chocolate        2.750        68.0
+## 68                                  Bullion        2.750        70.0
+## 69                          Burnt Fork Bend        3.250        72.0
+## 70                                 By Cacao        3.000        70.0
+## 71                              Cacai Cacao        3.375        70.0
+## 72                                 Cacao 70        3.500        70.0
+## 73                            Cacao Arabuco        2.500        70.0
+## 74                            Cacao Atlanta        2.500        75.0
+## 75                              Cacao Barry        3.000        70.0
+## 76                            Cacao Betulia        3.000        72.0
+## 77                          Cacao de Origen        3.250        75.0
+## 78                            Cacao Hunters        3.500        70.0
+## 79                             Cacao Market        3.500        70.0
+## 80                             Cacao Prieto        3.500        69.0
+## 81                            Cacao Sampaka        3.500        71.0
+## 82                              Cacao Store        3.250        70.0
+## 83                                Cacaodada        3.250        70.0
+## 84                                Cacaosuyo        3.000        70.0
+## 85        Cacaosuyo (Theobroma Inversiones)        3.250        70.0
+## 86                  Cacaoyere (Ecuatoriana)        3.000        76.5
+## 87                                Callebaut        1.875        65.0
+## 88                                  C-Amaro        3.000        75.0
+## 89                                      Cao        3.000        73.0
+## 90                         Caoni (Tulicorp)        2.875        66.0
+## 91                        Captain Pembleton        3.625        70.0
+## 92                                Caribeans        3.250        72.0
+## 93                        Carlotta Chocolat        3.250        65.0
+## 94                                     Casa        2.000        75.0
+## 95                          Casa Lasevicius        3.125        68.0
+## 96                               Castronovo        3.500        70.0
+## 97                                    Cello        2.750        70.0
+## 98                                    Cemoi        2.750        72.0
+## 99                                Chaleur B        2.750        70.0
+## 100                                  Chapon        3.250        71.0
+## 101                            Charm School        3.250        70.0
+## 102                  Chchukululu (Tulicorp)        2.875        65.0
+## 103                             Chequessett        3.500        72.0
+## 104                          Chloe Chocolat        3.500        70.0
+## 105                               Chocablog        3.250        70.0
+## 106                           Choco Del Sol        3.125        78.5
+## 107                              Choco Dong        3.125        70.0
+## 108                       Chococard (Lapos)        2.875        71.5
+## 109                             Chocolarder        2.625        69.5
+## 110                              Chocola&#39;te        3.750        69.0
+## 111              Chocolate Alchemist-Philly        2.500        85.0
+## 112                      Chocolate Con Amor        3.000        70.0
+## 113                    Chocolate Conspiracy        2.750        74.0
+## 114                        Chocolate Makers        3.500        75.0
+## 115                     Chocolate Tree, The        3.500        71.0
+## 116                              Chocolatoa        3.000        70.0
+## 117                     Chocolats Privilege        2.500        70.0
+## 118                            Chocolibrium        2.750        70.0
+## 119                               ChocoReko        3.000        77.0
+## 120                                Chocosol        3.250        65.0
+## 121                                Chocovic        3.250        71.0
+## 122                               Chocovivo        2.500        70.0
+## 123                                 Choklat        3.000        70.0
+## 124                  Chokolat Elot (Girard)        2.750        42.0
+## 125                                Choocsol        3.250        75.0
+## 126                        Christophe Toury        2.750        70.0
+## 127                       Christopher Elbow        3.500        72.0
+## 128            Christopher Morel (Felchlin)        3.750        68.0
+## 129                       Chuao Chocolatier        3.000        61.0
+## 130              Chuao Chocolatier (Pralus)        2.750        77.0
+## 131                         Claudio Corallo        3.375        77.5
+## 132                             Cloudforest        3.500        73.0
+## 133                                    Coco        3.500        70.0
+## 134                             Cocoa Carib        2.250        70.0
+## 135                         Coleman &amp; Davis        3.000        75.0
+## 136         Compania de Chocolate (Salgado)        3.250        72.0
+## 137                                  Condor        3.500        76.0
+## 138                              Confluence        2.750        78.0
+## 139                               Coppeneur        3.250        72.0
+## 140                      Cote d&#39; Or (Kraft)        1.000        70.0
+## 141                                  Cravve        3.250        70.0
+## 142                                    Creo        3.500        79.0
+## 143                           Crow and Moss        3.250        70.0
+## 144                                Daintree        3.000        70.0
+## 145                                Dalloway        2.750        72.0
+## 146                                  Damson        2.750        70.0
+## 147                               Dandelion        3.375        70.0
+## 148              Dandelion (aka Brower Ave)        3.250        70.0
+## 149                                   Danta        3.250        70.0
+## 150                                     DAR        3.000        72.0
+## 151                                  Darcis        3.125        71.0
+## 152                             Dark Forest        3.250        70.0
+## 153                                   Davis        2.750        70.0
+## 154                               De Mendes        3.500        68.5
+## 155                             De Villiers        2.750        70.0
+## 156             Dean and Deluca (Belcolade)        3.000        64.0
+## 157      Debauve &amp; Gallais (Michel Cluizel)        3.375        65.0
+## 158                                Definite        2.600        70.0
+## 159                               Desbarres        2.750        72.0
+## 160                                 DeVries        3.500        77.0
+## 161                             Dick Taylor        3.500        74.0
+## 162                               Diogo Vaz        2.875        72.5
+## 163                         Doble &amp; Bignall        3.250        72.0
+## 164                         Dole (Guittard)        3.750        70.0
+## 165                      Dolfin (Belcolade)        2.250        79.0
+## 166                                  Domori        3.500        70.0
+## 167                                Dormouse        2.750        75.0
+## 168                           Double Spiral        2.750        75.0
+## 169                                 Duffy&#39;s        3.500        70.5
+## 170                                Dulcinea        3.250        70.0
+## 171                                  Durand        2.750        82.0
+## 172                                   Durci        3.500        70.0
+## 173                       East Van Roasters        3.500        70.0
+## 174                             Eau de Rose        3.250        70.0
+## 175                        Eclat (Felchlin)        2.750        72.0
+## 176                        Eclat (Fruition)        3.500        80.0
+## 177                                Edelmond        3.000        68.0
+## 178                                El Ceibo        3.250        73.0
+## 179                                  El Rey        2.750        70.0
+## 180                                  Eldora        3.500        70.0
+## 181                          Emerald Estate        3.000        65.0
+## 182                                 Emily&#39;s        3.250        78.5
+## 183                               Encuentro        3.500        70.0
+## 184                                    ENNA        3.000        72.0
+## 185          Enric Rovira (Claudio Corallo)        3.250        80.0
+## 186                      Erithaj (A. Morin)        3.250        74.0
+## 187                                  Escazu        2.750        72.0
+## 188                  Ethel&#39;s Artisan (Mars)        2.500        62.0
+## 189                                Ethereal        3.500        80.0
+## 190                               Exquisito        3.000        73.0
+## 191                         Fearless (AMMA)        2.750        75.0
+## 192                          Feitoria Cacao        2.750        76.0
+## 193                                Felchlin        3.000        65.0
+## 194                                   Finca        2.750        75.0
+## 195                                  Finnia        2.875        70.0
+## 196                                Firetree        3.500        72.0
+## 197                            Five (5)Mile        2.875        75.0
+## 198                                    FJAK        3.500        70.0
+## 199                           Forever Cacao        2.750        72.0
+## 200                        Forteza (Cortes)        2.750        75.0
+## 201                                   Fossa        3.125        70.0
+## 202                                 Foundry        3.000        70.0
+## 203                              Franceschi        3.500        70.0
+## 204                       Frederic Blondeel        3.500        70.0
+## 205                            French Broad        3.500        70.0
+## 206                                  Fresco        3.500        70.0
+## 207                             Fresh Coast        3.625        70.0
+## 208         Fresh Coast aka Just Good Choc.        3.500        70.0
+## 209                              Friis Holm        3.500        70.0
+## 210                     Friis Holm (Bonnat)        3.250        70.0
+## 211                                Fruition        3.500        74.0
+## 212                                  Fu Wan        3.000        70.0
+## 213                           Garden Island        2.500        85.0
+## 214                           Georgia Ramon        3.500        75.0
+## 215                               Glennmade        3.250        68.0
+## 216                                Gonzales        3.000        70.0
+## 217                                 Goodnow        2.750        73.0
+## 218                           Goodnow Farms        3.250        77.0
+## 219                                  Gotham        2.750        70.0
+## 220                             Grand Place        3.000        72.0
+## 221                  Green &amp; Black&#39;s (ICAM)        2.500        70.0
+## 222                       Green Bean to Bar        3.000        71.5
+## 223                   Grenada Chocolate Co.        2.750        71.0
+## 224                          Guido Castagna        3.000        64.0
+## 225                                Guittard        3.125        65.0
+## 226                                Habitual        3.000        74.0
+## 227                                  Hachez        2.500        77.0
+## 228                    Hacienda El Castillo        2.875        62.5
+## 229                                   Haigh        3.000        70.0
+## 230                            Harper Macaw        3.250        75.0
+## 231                          Harris &amp; James        3.125        70.0
+## 232                              Hazel Hill        3.250        70.0
+## 233                               Heilemann        2.750        64.0
+## 234                          Heinde &amp; Verre        2.500        71.0
+## 235 Heirloom Cacao Preservation (Brasstown)        3.250        70.0
+## 236  Heirloom Cacao Preservation (Fruition)        3.500        74.0
+## 237  Heirloom Cacao Preservation (Guittard)        3.625        67.0
+## 238     Heirloom Cacao Preservation (Manoa)        3.500        72.0
+## 239 Heirloom Cacao Preservation (Millcreek)        3.500        70.0
+## 240     Heirloom Cacao Preservation (Mindo)        3.500        77.0
+## 241    Heirloom Cacao Preservation (Zokoko)        3.875        70.0
+## 242                             hello cocoa        3.125        65.5
+## 243                                    hexx        3.000        70.5
+## 244                                 Hogarth        3.250        71.0
+## 245                   Hoja Verde (Tulicorp)        3.000        72.0
+## 246                              Holy Cacao        3.500        70.0
+## 247                                  Honest        2.500        72.0
+## 248                          Hotel Chocolat        2.875        73.5
+## 249              Hotel Chocolat (Coppeneur)        3.000        75.0
+## 250                             Hummingbird        3.375        70.0
+## 251                       Idilio (Felchlin)        3.750        72.0
+## 252                                   Indah        2.500        61.0
+## 253                              Indaphoria        3.000        70.0
+## 254                                    Indi        3.125        74.5
+## 255                            iQ Chocolate        2.875        72.0
+## 256                                  Isidro        3.250        72.0
+## 257                       Islands Chocolate        2.750        72.0
+## 258                                   Izard        3.125        70.0
+## 259                           Jacque Torres        2.000        71.0
+## 260                      Jean Marie Auboine        3.250        72.0
+## 261                          Johnny Iuzzini        3.375        71.0
+## 262                                  Jordis        2.750        69.0
+## 263                               Kad Kokoa        3.500        70.0
+## 264                                 Kah Kow        3.250        66.0
+## 265                           Kah Kow - USA        3.500        70.0
+## 266                                  Kaitxo        3.000        75.0
+## 267                                   Kakao        3.125        64.5
+## 268                   Kallari (Ecuatoriana)        2.875        80.0
+## 269                           Kaoka (Cemoi)        2.750        75.0
+## 270                                Kerchner        3.750        70.0
+## 271                            Ki&#39; Xocolatl        2.000        72.0
+## 272                               Kin + Pod        3.250        70.0
+## 273                                Kiskadee        3.000        60.0
+## 274                                    Krak        3.125        70.0
+## 275                                     Kto        3.250        72.0
+## 276                                    K&#39;ul        3.500        70.0
+## 277                                    Kyya        2.750        72.5
+## 278                 L.A. Burdick (Felchlin)        3.500        71.0
+## 279                  La Cascade du Chocolat        3.000        68.0
+## 280                 La Chocolaterie Nanairo        2.750        70.0
+## 281                              La Chorena        3.125        70.0
+## 282                     La Feverie (Hasnaa)        3.500        70.0
+## 283        La Maison du Chocolat (Valrhona)        3.375        67.0
+## 284                            La Oroquidea        2.500        72.0
+## 285                          La Pepa de Oro        3.250        60.0
+## 286                                 La Rifa        3.500        70.0
+## 287                      Laia aka Chat-Noir        3.000        75.0
+## 288                          Lajedo do Ouro        3.500        70.0
+## 289              Lake Champlain (Callebaut)        2.500        75.0
+## 290                             L&#39;Amourette        3.000        75.0
+## 291                                    Land        3.250        71.0
+## 292                        Landmark (Amano)        3.750        74.0
+## 293                                  Legast        3.250        70.0
+## 294                             Letterpress        3.250        70.0
+## 295                                    Levy        3.500        71.0
+## 296                                   Lilla        3.000        70.0
+## 297                            Lillie Belle        3.500        68.0
+## 298                        Lindt &amp; Sprungli        3.000        85.0
+## 299                                   Loiza        2.500        65.0
+## 300                                Lonohana        3.375        70.5
+## 301                                Love Bar        2.000        75.0
+## 302                              Love Brown        3.125        76.5
+## 303                             Luisa Abram        3.125        75.5
+## 304                                   Luker        3.000        59.0
+## 305                Machu Picchu Trading Co.        1.875        62.5
+## 306                                    MADE        2.625        75.0
+## 307                     Madecasse (Cinagra)        3.625        68.5
+## 308                                   Madre        2.750        70.0
+## 309                                  Maglio        3.125        70.0
+## 310                                  Majani        2.000        70.0
+## 311          Malagasy (Chocolaterie Robert)        3.125        74.0
+## 312                                 Malagos        3.500        65.0
+## 313                                   Malai        2.750        70.0
+## 314                    Malie Kai (Guittard)        3.125        55.0
+## 315                                   Malmo        3.000        70.0
+## 316                                    Mana        2.625        74.0
+## 317                         Manifesto Cacao        2.750        70.0
+## 318                                   Manoa        3.250        72.0
+## 319                   Manufaktura Czekolady        3.500        70.0
+## 320                           Map Chocolate        3.375        72.0
+## 321                                  Marana        3.000        70.0
+## 322                       Marigold&#39;s Finest        3.250        75.0
+## 323                          Markham &amp; Fitz        2.750        75.0
+## 324                                   Marou        3.500        75.0
+## 325                                    Mars        3.125        65.0
+## 326                                Marsatta        2.375        81.5
+## 327                            Martin Mayer        3.000        76.0
+## 328                           Mast Brothers        3.000        73.5
+## 329                                  Matale        3.875        71.0
+## 330                                Maverick        3.250        70.0
+## 331                                Mayacama        3.000        72.0
+## 332                                 McGuire        2.875        70.0
+## 333                             Meadowlands        3.000        70.0
+## 334                                  Mellow        3.000        70.0
+## 335                   Menakao (aka Cinagra)        2.500        76.0
+## 336                               Mesocacao        3.250        75.0
+## 337                                 Mestico        2.500        75.0
+## 338                                Metiisto        3.375        71.0
+## 339                            Metropolitan        3.500        70.0
+## 340                                  Meybol        3.500        70.0
+## 341                          Michel Cluizel        3.500        67.0
+## 342                              Middlebury        3.250        75.0
+## 343                            Mike &amp; Becky        3.250        70.0
+## 344                Millcreek Cacao Roasters        3.000        70.0
+## 345                               Millesime        3.000        74.0
+## 346                                  Milton        3.375        70.0
+## 347                                   Mindo        2.750        72.0
+## 348                                 Minimal        3.500        70.0
+## 349                                  Mirzam        3.500        72.0
+## 350                                  Misina        3.500        70.0
+## 351                                 Mission        3.500        70.0
+## 352                                    Mita        2.500        65.0
+## 353                                    Moho        3.000        72.0
+## 354                                    Moka        3.000        72.0
+## 355                                 Molucca        3.000        70.0
+## 356                               Momotombo        2.750        70.0
+## 357                                Monarque        3.500        72.0
+## 358                         Monsieur Truffe        3.250        70.0
+## 359                                 Monsoon        3.250        70.0
+## 360                             Montecristi        3.500        70.0
+## 361                                   MUCHO        3.000        70.0
+## 362                    Muchomas (Mesocacao)        3.500        75.0
+## 363             Musee du Chocolat Theobroma        3.500        70.0
+## 364                                  Mutari        2.750        69.5
+## 365                                   Nahua        2.750        64.0
+## 366                                   Naive        3.125        70.0
+## 367                                   Nanea        3.500        85.0
+## 368                           Nathan Miller        2.500        71.0
+## 369                               Nearynogs        3.250        70.0
+## 370                     Neuhaus (Callebaut)        2.625        72.0
+## 371                                  Nibble        3.000        72.0
+## 372                               Night Owl        3.125        75.0
+## 373                                   Nikoa        3.750        72.0
+## 374                                    Nina        3.000        70.0
+## 375                    Ninth (9th) &amp; Larkin        3.000        72.0
+## 376                  Noble Bean aka Jerjobo        3.000        75.0
+## 377                           Noir d&#39; Ebine        3.000        70.0
+## 378                              Nova Monda        3.000        75.0
+## 379                                  Nuance        3.250        70.0
+## 380                                  Nugali        3.500        70.0
+## 381                   Oakland Chocolate Co.        2.500        70.0
+## 382                                   Obolo        3.750        70.0
+## 383                                  Ocelot        3.875        72.5
+## 384                                    Ocho        3.125        72.0
+## 385                                   Ohiyo        2.875        70.0
+## 386              Oialla by Bojessen (Malmo)        3.625        74.0
+## 387                      Olive and Sinclair        3.000        72.0
+## 388                                  Olivia        2.750        80.5
+## 389                                Omanhene        2.750        80.0
+## 390                                   Omnom        3.250        70.0
+## 391                             organicfair        2.875        72.0
+## 392               Original Beans (Felchlin)        3.125        69.0
+## 393      Original Hawaiin Chocolate Factory        3.000        60.0
+## 394                                Orquidea        3.000        68.5
+## 395                                  Pacari        3.500        70.0
+## 396                              Palet D&#39;Or        3.500        72.0
+## 397                         Palette de Bine        3.250        72.0
+## 398                                  Pangea        3.250        76.0
+## 399                                 Park 75        3.500        65.0
+## 400                              Parliament        3.375        70.0
+## 401                          Parre Chocolat        2.750        75.0
+## 402                                  Pascha        2.625        62.5
+## 403                                  Patric        3.875        70.0
+## 404                              Paul Young        2.500        68.5
+## 405                                 Peppalo        3.000        82.0
+## 406                               Perrenial        3.000        75.0
+## 407                           Petite Patrie        3.250        70.0
+## 408                        Pierre Marcolini        3.250        72.0
+## 409                        Piety and Desire        3.500        70.0
+## 410                                Pinellas        2.500        80.0
+## 411                              Pitch Dark        2.750        73.0
+## 412                     Pomm (aka Dead Dog)        2.625        79.0
+## 413                                 Potomac        3.625        70.0
+## 414                                  Pralus        3.125        75.0
+## 415                          Primo Botanica        3.250        75.0
+## 416                      Public Chocolatory        2.750        70.0
+## 417                      Pump Street Bakery        3.250        75.0
+## 418                            Pura Delizia        3.375        73.0
+## 419                             Q Chocolate        3.250        70.0
+## 420                                   Qantu        3.500        70.0
+## 421                      Quetzalli (Wolter)        2.875        72.0
+## 422                                   Raaka        3.250        72.5
+## 423                           Rain Republic        2.750        70.0
+## 424                      Rancho San Jacinto        3.000        75.0
+## 425                                  Ranger        3.250        73.0
+## 426                         Raoul Boulanger        3.250        75.0
+## 427                                  Raphio        3.500        72.0
+## 428                               Raw Cocoa        2.500        70.0
+## 429      Republica del Cacao (aka Confecta)        3.250        75.0
+## 430                                  Ritual        3.500        75.0
+## 431                               River-Sea        2.500        70.0
+## 432                        Roasting Masters        3.250        70.0
+## 433        Robert (aka Chocolaterie Robert)        3.250        71.5
+## 434          Rococo (Grenada Chocolate Co.)        3.500        66.0
+## 435                                   Rogue        3.500        72.5
+## 436                             Rozsavolgyi        2.625        73.0
+## 437                                   Ruket        3.000        72.0
+## 438                                S.A.I.D.        3.500        72.0
+## 439                                  Sacred        3.000        76.0
+## 440                                 Salgado        3.500        70.0
+## 441                                San Jose        3.250        70.0
+## 442           Santander (Compania Nacional)        3.000        70.0
+## 443                                 Santome        2.750        70.0
+## 444                        Scharffen Berger        3.500        70.0
+## 445                                Seaforth        2.750        70.0
+## 446                                Seahorse        3.000        70.0
+## 447                   Shane Chocolate Works        3.000        70.0
+## 448                          Shark Mountain        3.250        73.5
+## 449                                 Shark&#39;s        2.250        73.0
+## 450                                Shattell        3.375        72.5
+## 451                                    Sibu        3.375        76.0
+## 452                               Sibu Sura        2.500        70.0
+## 453                          Silvio Bessone        3.125        66.0
+## 454                                  Sirene        3.500        73.0
+## 455                                Sjolinds        2.875        71.0
+## 456                  Smooth Chocolator, The        3.500        70.0
+## 457                       Snake &amp; Butterfly        3.000        68.0
+## 458                                   Soeka        3.250        66.0
+## 459                                  Soklet        2.750        70.0
+## 460                               Sol Cacao        3.250        71.0
+## 461                                 Solkiki        2.750        70.0
+## 462                           Solomons Gold        3.250        72.5
+## 463                                Solstice        3.250        70.0
+## 464                                    Soma        3.625        70.0
+## 465                              Somerville        3.375        70.0
+## 466                                    Soul        3.375        75.0
+## 467                               Spagnvola        3.000        75.0
+## 468                                 Spencer        3.500        70.0
+## 469                     Sprungli (Felchlin)        3.000        70.0
+## 470                                   SRSLY        2.625        77.0
+## 471                               Starchild        3.000        70.0
+## 472                   Stella (aka Bernrain)        3.000        70.0
+## 473                            Stone Grindz        3.500        70.0
+## 474                          StRita Supreme        2.500        70.0
+## 475                         Sublime Origins        3.000        72.5
+## 476                              Summerbird        2.750        66.0
+## 477                        Suruca Chocolate        2.875        65.0
+## 478                    Svenska Kakaobolaget        2.750        72.0
+## 479                          Sweet Escalier        3.000        70.0
+## 480                               Sweetness        3.250        73.0
+## 481                            Szanto Tibor        3.250        70.0
+## 482                                   Tabal        2.750        70.0
+## 483             Tablette (aka Vanillabeans)        3.125        66.0
+## 484                                    Tala        2.875        72.5
+## 485                          Tan Ban Skrati        3.250        70.0
+## 486                           Taste Artisan        3.250        75.0
+## 487                               Taucherli        3.125        71.0
+## 488                                    Taza        3.000        72.5
+## 489                                    TCHO        2.625        70.0
+## 490                                   Tejas        3.000        70.0
+## 491                                 Terroir        3.375        70.0
+## 492                                The Barn        3.000        70.0
+## 493                                    Theo        3.000        75.0
+## 494                               Theobroma        3.250        70.0
+## 495            Thistle &amp; Rose aka Aggie USU        3.500        70.0
+## 496                                  Tibito        3.125        70.0
+## 497                           Timo A. Meyer        3.750        72.0
+## 498                              Tiny House        2.750        71.0
+## 499                     To&#39;ak (Ecuatoriana)        3.250        81.0
+## 500                  Tobago Estate (Pralus)        4.000        70.0
+## 501                                  Tocoti        3.000        74.0
+## 502                                  Tosier        2.875        70.0
+## 503                             Tree to Bar        3.500        70.0
+## 504                               Treehouse        3.000        72.0
+## 505                                  Tribar        3.250        71.5
+## 506                                   Tribe        2.750        70.0
+## 507                         Tsara (Cinagra)        3.500        72.0
+## 508                  twenty-four blackbirds        3.250        75.0
+## 509                              Two Ravens        3.000        60.0
+## 510                     Un Dimanche A Paris        3.750        63.0
+## 511                                 Uncouth        3.000        75.0
+## 512                                  Undone        2.875        72.0
+## 513                                Upchurch        3.125        72.0
+## 514                                    Urzi        3.250        65.0
+## 515                                 Utopick        3.750        70.0
+## 516                                    Vaka        3.500        74.0
+## 517                                Valrhona        3.500        64.5
+## 518               Vanleer (Barry Callebaut)        2.625        68.5
+## 519           Vao Vao (Chocolaterie Robert)        2.875        71.0
+## 520                                  Vicuna        3.250        70.0
+## 521                                  Videri        3.500        75.0
+## 522                    Vietcacao (A. Morin)        3.500        70.0
+## 523                     Vintage Plantations        3.000        75.0
+## 524          Vintage Plantations (Tulicorp)        2.500        82.5
+## 525                              Violet Sky        3.000        77.0
+## 526                                   Vivra        2.500        70.0
+## 527            Wellington Chocolate Factory        3.500        70.0
+## 528                             White Label        3.000        70.0
+## 529                              Whittakers        2.500        72.0
+## 530                        Wilkie&#39;s Organic        2.750        75.0
+## 531                          Willie&#39;s Cacao        3.125        71.5
+## 532                                      Wm        3.500        74.0
+## 533                               Woodblock        3.250        70.0
+## 534                                 Xocolat        3.000        66.0
+## 535                            Xocolatisimo        3.000        70.0
+## 536                                 Xocolla        2.625        70.0
+## 537                                   Zak&#39;s        3.250        70.0
+## 538                           Zart Pralinen        3.250        74.0
+## 539                                  Zokoko        3.500        68.0
+## 540                       Zoto (Chocolatoa)        3.125        71.0
+## 541                                  Zotter        3.250        70.0</code></pre>
 </div>
 
 

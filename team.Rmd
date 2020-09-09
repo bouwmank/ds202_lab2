@@ -11,8 +11,28 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Team 8: Adam Ford and Kellan Bouwman
 
-
 ```{r}
 choco <- read.csv("https://raw.githubusercontent.com/xdaiISU/ds202materials/master/hwlabs/data/choco.csv") 
 str(choco) 
+```
+
+We talked and planned to perform two analysis on the data, first we want to see which companies received the highest mean ratings from the reviewer. Additionally, to get more perspective on the companies themselves we want to view the realationship between each company and their cocoa percentage.
+
+```{r}
+companies <- c()
+for( row in 1:nrow(choco))
+{
+  companies <- c(companies, choco[row, 'Company'])
+}
+uniques <- unique(unlist(companies, use.names = FALSE))
+medianRating <- c()
+medianCocoa <- c()
+for( uniq in uniques)
+{
+  curr <- choco[choco$Company == uniq,]
+  medianRating <- c(medianRating, median(curr$Rating, na.rm = TRUE))
+  medianCocoa <- c(medianCocoa, median(curr$Cocoa_Percent, na.rm = TRUE))
+}
+companyStats <- data.frame("Company" = uniques, "MedianRating" = medianRating, "MedianCocoa" = medianCocoa )
+companyStats
 ```
