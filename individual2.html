@@ -467,22 +467,22 @@ for( uniq in uniques)
   means &lt;- c(means, mean(curr$Rating, na.rm = TRUE))
 }
 meanByCharac &lt;- data.frame(&quot;Characteristic&quot; = uniques, &quot;Mean&quot; = means)
-best5 &lt;- meanByCharac[order(meanByCharac$Mean),]
-worst5 &lt;- meanByCharac[order(-meanByCharac$Mean),]
+worst5 &lt;- meanByCharac[order(meanByCharac$Mean),]
+best5 &lt;- meanByCharac[order(-meanByCharac$Mean),]
 head(best5, 5)</code></pre>
-<pre><code>##            Characteristic     Mean
-## 380 this is not chocolate 1.000000
-## 669     strong off flavor 1.000000
-## 185           very bitter 1.458333
-## 316                klingy 1.500000
-## 378 high intensity bitter 1.500000</code></pre>
-<pre class="r"><code>head(worst5, 5)</code></pre>
 <pre><code>##     Characteristic Mean
 ## 18       tangerine    4
 ## 105 intense pepper    4
 ## 207        rounded    4
 ## 223    raspberries    4
 ## 264   gentle roast    4</code></pre>
+<pre class="r"><code>head(worst5, 5)</code></pre>
+<pre><code>##            Characteristic     Mean
+## 380 this is not chocolate 1.000000
+## 669     strong off flavor 1.000000
+## 185           very bitter 1.458333
+## 316                klingy 1.500000
+## 378 high intensity bitter 1.500000</code></pre>
 <p>These lists show the mean Rating of the authors favorite and least favorite chocolates based on the characteristic listed.</p>
 <pre class="r"><code>tangerine &lt;- choco[(choco$Characteristics1 == &#39;tangerine&#39;) | (choco$Characteristics2 == &#39;tangerine&#39;) | (choco$Characteristics3 == &#39;tangerine&#39;) | (choco$Characteristics4 == &#39;tangerine&#39;),]
 

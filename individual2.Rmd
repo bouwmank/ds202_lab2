@@ -61,12 +61,12 @@ for( uniq in uniques)
   means <- c(means, mean(curr$Rating, na.rm = TRUE))
 }
 meanByCharac <- data.frame("Characteristic" = uniques, "Mean" = means)
-best5 <- meanByCharac[order(meanByCharac$Mean),]
-worst5 <- meanByCharac[order(-meanByCharac$Mean),]
+worst5 <- meanByCharac[order(meanByCharac$Mean),]
+best5 <- meanByCharac[order(-meanByCharac$Mean),]
 head(best5, 5)
 head(worst5, 5)
 ```
-These lists show the mean Rating of the authors favorite and least favorite chocolates based on the characteristic listed. 
+These lists show the mean Rating of the authors favorite and least favorite chocolates based on the characteristic listed.
 
 ```{r}
 tangerine <- choco[(choco$Characteristics1 == 'tangerine') | (choco$Characteristics2 == 'tangerine') | (choco$Characteristics3 == 'tangerine') | (choco$Characteristics4 == 'tangerine'),]
@@ -77,7 +77,7 @@ boxplot(tangerine$Rating)
 boxplot(notChocoloate$Rating)
 ```
   
-These graphs show us why some of the characteristics had the highest or lowest mean. It is due to them not having many ratings, often a single very low or very high rating. 
+These graphs show us why some of the characteristics had the highest or lowest mean. It is due to them not having many ratings, often a single very low or very high rating. This unfortunately lacks meaning outside of just showing why their mean's are polarizing.
 
 ## 5
 With my partner I hope to find a more meaningful graphical showing of characteristics with high or low means, keeping in better mind the amount of reviews a chocolate has received. This perhaps means eliminating characteristics that have not reached a threshold of number of reviews.
