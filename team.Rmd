@@ -16,7 +16,8 @@ choco <- read.csv("https://raw.githubusercontent.com/xdaiISU/ds202materials/mast
 str(choco) 
 ```
 
-We talked and planned to perform two analysis on the data, first we want to see which companies received the highest mean ratings from the reviewer. Additionally, to get more perspective on the companies themselves we want to view the realationship between each company and their cocoa percentage.
+We talked and planned to perform two analysis on the data, first we want to see which companies received the highest mean ratings from the reviewer. Additionally, to get more perspective on the companies themselves we want to view the relationship between each company and their cocoa percentage. This led us to place them ratings by the cocoa on a scatter plot to see if the were any tends visible, unfortunately there are no visible linear trends in stead we see a clustering of data approximately centered at 70 Median Cocoa and 3.0 Rating.
+
 
 ```{r}
 companies <- c()
@@ -35,4 +36,5 @@ for( uniq in uniques)
 }
 companyStats <- data.frame("Company" = uniques, "MedianRating" = medianRating, "MedianCocoa" = medianCocoa )
 companyStats
+plot(medianCocoa, medianRating, main="Median Rating by Median Cocoa", xlab="Median Cocoa ", ylab="Median Rating ", pch=19)
 ```
