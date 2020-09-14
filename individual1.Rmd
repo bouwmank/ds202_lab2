@@ -25,17 +25,101 @@ boxplot(rating)
 
 2. How does the number of ratings depend on the year? Draw a bar chart of the number of reports.
 
-     Answer:
+     Answer: There is little effect on what year it is by what the ratings are. There is a large amount of osolation in raitngs though over time.
+```{r}
+barplot(choco$Rating,choco$Date)
+```
 
 3. Do ratings depend on the cacao percentage of a chocolate bar? Create both numerical and graphical summaries, and explain.
      
-     Answer:
+     Answer:No there is no direct eveidence when looking at all of the data to say that the ratings and cocoa percent are corralated linearly. There is no visable trend, however most of the data is clustered togehter from approximatly 55% Cocoa to 90% and from a rating 2.0 to 3.5. This cluster suggests both that there is an active lurking data, and due to the non-continous vairble of rating that data points are most likely over lapping.
+     
+```{r}
+plot(choco$Cocoa_Percent,choco$Rating, main="Rating by Median Cocoa", xlab="Cocoa ", ylab="Rating ", pch=19)
+cor(choco$Cocoa_Percent,choco$Rating)
+```
 
 4. How do different characteristics of the chocolate compare? To elaborate, which characteristics tend to be more favorable and which ones are not? Create both numerical and graphical summaries, and explain.
 
-     Answer:
+     Answer: in characteristics1 the characteristic dirt had the highest value, for characteristic2 it was rainins, for characteristic3 it was tang. This is not looking at which bars had all three characteristics at the same time, instaead looking the values in each one with its rating was, not the combined flavor.
+     
+```{r}
+characters1 <- c()
+characters2 <- c()
+characters3 <- c()
+counter <- 0
+for( row in 1:nrow(choco))
+{
+  characters1 <- c(characters1, choco[row, 'Characteristics1'])
+  characters2 <- c(characters2, choco[row, 'Characteristics2'])
+  characters3 <- c(characters3, choco[row, 'Characteristics3'])
+  counter <- counter + 1
+}
+uniques1 <- unique(unlist(characters1, use.names = FALSE))
+uniques2 <- unique(unlist(characters2, use.names = FALSE))
+uniques3 <- unique(unlist(characters3, use.names = FALSE))
+Rating <- c()
+for( uniq in uniques1)
+{
+  curr <- choco[choco$Characteristics1 == uniq,]
+  Rating <- c(Rating, mean(curr$Rating, na.rm = TRUE))
+}
+barplot(Rating ~ uniques1)
+
+Rating <- c()
+for( uniq in uniques2)
+{
+  curr <- choco[choco$Characteristics2 == uniq,]
+  Rating <- c(Rating, mean(curr$Rating, na.rm = TRUE))
+}
+barplot(Rating ~ uniques2)
+
+Rating <- c()
+for( uniq in uniques3)
+{
+  curr <- choco[choco$Characteristics3 == uniq,]
+  Rating <- c(Rating, mean(curr$Rating, na.rm = TRUE))
+}
+barplot(Rating ~ uniques3)
+
+```
 
 5. Brainstorm two analyses you would like to perform with your teammate. Describe in plain language what comparisons are you making. Create suitable numerical and graphical summaries for your analyses. Describe the results.
 
-     Answer:
+     Answer: I would like to look at the mean rating to mean cocoa percent by company. The reson for this is to reduce the number of data points and to see if the companies them selves are the lurking variable that might have been missing. Secondly I'd like to take a look a mean cocoa by mean rating per year to see if the rating is changing over time at all. Both of these is to lessing the amount of data points due to the overlap that is happening, as well as to check for pther factors the may be causing the lack of trends or trends themselves.
+     Results: There are no linear trends to either but there is a large clustering of the data in each,
+     
+```{r}
+companies <- c()
+Years <- c()
+for( row in 1:nrow(choco))
+{
+  companies <- c(companies, choco[row, 'Company'])
+  Years <-  c(companies, choco[row, 'Date'])
+}
+unique_companies <- unique(unlist(companies, use.names = FALSE))
+unique_Years <-  unique(unlist(Years, use.names = FALSE))
+meanRating <- c()
+meanCocoa <- c()
+for( uniq in unique_companies)
+{
+  curr <- choco[choco$Company == uniq,]
+  meanRating <- c(meanRating, mean(curr$Rating, na.rm = TRUE))
+  meanCocoa <- c(meanCocoa, mean(curr$Cocoa_Percent, na.rm = TRUE))
+}
+companyStats <- data.frame("Company" = unique_companies, "MeanRating" = meanRating, "MeanCocoa" = meanCocoa )
+companyStats
+plot(meanCocoa, meanRating, main="Mean Rating by Mean Cocoa (Based off Company)", xlab="Mean Cocoa ", ylab="Mean Rating ", pch=19)
+
+meanRatings <- c()
+meanCocoas <- c()
+for( uniques in unique_Years)
+{
+  curr <- choco[choco$Date == uniques,]
+  meanRatings <- c(meanRatings, mean(curr$Rating, na.rm = TRUE))
+  meanCocoas <- c(meanCocoas, mean(curr$Cocoa_Percent, na.rm = TRUE))
+}
+plot(meanCocoa, meanRating, main="Mean Rating by Mean Cocoa (Based off year)", xlab="Mean Cocoa ", ylab="Mean Rating ", pch=19)
+```
+
      
